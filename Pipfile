@@ -18,6 +18,7 @@ drf-yasg = "*"
 django-heroku = "*"
 gunicorn = "*"
 psycopg2 = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 
