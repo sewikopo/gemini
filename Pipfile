@@ -15,6 +15,9 @@ django-rest-swagger = "*"
 pyyaml = "*"
 uritemplate = "*"
 drf-yasg = "*"
+django-heroku = "*"
+gunicorn = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
