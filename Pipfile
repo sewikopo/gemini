@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-debug-toolbar = "*"
+mysqlclient = "*"
+django-rest-framework = "*"
+markdown = "*"
+django-filter = "*"
+django-cors-headers = "*"
+django-rest-swagger = "*"
+pyyaml = "*"
+uritemplate = "*"
+drf-yasg = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
