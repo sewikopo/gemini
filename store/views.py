@@ -24,6 +24,7 @@ from store import serializers
 # url(r'^$', schema_view)
 
 class ProductViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
@@ -53,6 +54,7 @@ class ProductViewSet(ModelViewSet):
 
 
 class CategoryViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
     queryset = Category.objects.annotate(
         products_count=Count('products')).all()
     serializer_class = CategorySerializer
@@ -65,6 +67,7 @@ class CategoryViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class OrderViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
     queryset=Order.objects.all()
     serializer_class=OrderSerializer
     
@@ -81,6 +84,7 @@ class OrderViewSet(ModelViewSet):
     
     
 class ServiceViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
     queryset=Service.objects.all()
     serializer_class=ServiceSerializer
     
@@ -113,7 +117,7 @@ class OrderItemViewSet(ModelViewSet):
         return {'order_id': self.kwargs['order_pk']}
 
 class ServiceItemViewSet(ModelViewSet):
-    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
+    http_method_names = ['get', 'post', 'patch', 'delete']
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
