@@ -30,7 +30,7 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'unit_price']    
 
-class OrderItemSerializer(serializers.ModelSerializer):
+class OrderItemSerializer(WritableNestedModelSerializer):
     product = SimpleProductSerializer()
     total_price = serializers.SerializerMethodField()
 
@@ -51,7 +51,7 @@ class ServiceItemSerializer(serializers.ModelSerializer):
         model = ServiceItem
         fields = ['id', 'product', 'quantity','total_price']
 
-class OrderSerializer(WritableNestedModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
     total_price = serializers.SerializerMethodField()
 
@@ -61,6 +61,16 @@ class OrderSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'placed_at','payment_status', 'items','total_price']
+        
+    # def to_representation(self, instance):
+    #     representation = super(OrderSerializer, self).to_representation(instance)
+    #     representation['items'] = OrderItemSerializer(instance.items.all(), many=True).data
+    #     return representation
+    # def create(instance,self, validated_data):
+    #     items = validated_data.pop('items')
+    #     instance.items.clear() 
+    #     instance.items.add(*items) 
+    #     return super(OrderSerializer,self).create(validated_data)
         
 class ServiceSerializer(serializers.ModelSerializer):
     items = ServiceItemSerializer(many=True)
