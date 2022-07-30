@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-i-*p+yv^ft4qc&r8gjx$kx886oe(n**$=c8z&uo)%))7#_*peo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
@@ -56,8 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-    'corsheaders.middleware.CorsMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'GEMINI.urls'
@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'GEMINI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'store',
         'HOST': 'localhost',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': 'MarcLim21.',
     }
 }

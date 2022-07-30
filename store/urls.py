@@ -8,7 +8,7 @@ router.register('products', views.ProductViewSet)
 router.register('categories',views.CategoryViewSet)
 router.register('orders',views.OrderViewSet)
 router.register('services',views.ServiceViewSet)
-
+router.register('staff',views.StaffViewSet)
 
 
 orders_router = routers.NestedDefaultRouter(router,'orders', lookup='order')

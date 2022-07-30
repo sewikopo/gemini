@@ -1,7 +1,7 @@
 
 from decimal import Decimal
 
-from .models import Category,Product, OrderItem,Order,ServiceItem, Service
+from .models import Category,Product, OrderItem,Order,ServiceItem, Service,Staff
 from rest_framework import serializers
 from django.db import transaction
 
@@ -153,3 +153,7 @@ class CreateServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = ['staff', 'license_plates']
         
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = ['name']

@@ -12,11 +12,11 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.db.models.aggregates import Count
 from django.template import Template, Context, loader
-from .models import Category, Service, Product, Order,OrderItem,ServiceItem
-from .serializers import  AddOrderItemSerializer, CategorySerializer, OrderItemSerializer, CreateOrderSerializer
+from .models import Category, Service, Product, Order,OrderItem,ServiceItem, Staff
+from .serializers import  AddOrderItemSerializer, CategorySerializer, OrderItemSerializer, CreateOrderSerializer, StaffSerializer
 from .serializers import ProductSerializer, OrderSerializer, UpdateOrderItemSerializer
 from .serializers import ServiceSerializer, CreateServiceSerializer, AddServiceItemSerializer, UpdateServiceItemSerializer
-from .serializers import ServiceItemSerializer
+from .serializers import ServiceItemSerializer, StaffSerializer
 from store import serializers 
 
 
@@ -128,3 +128,7 @@ class ServiceItemViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'service_id': self.kwargs['service_pk']}
             
+class StaffViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializer
