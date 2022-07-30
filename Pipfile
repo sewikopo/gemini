@@ -19,6 +19,7 @@ django-heroku = "*"
 gunicorn = "*"
 psycopg2 = "*"
 drf-nested-routers = "*"
+drf-writable-nested = "*"
 
 [dev-packages]
 

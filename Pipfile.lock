@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fda2a00df9dadb330cfb2e891f0c15f7f747060d9f35c06ba9c265a87a9e9130"
+            "sha256": "699fba74459d29bcb13e9bdb228d5d3ab485387e10f632119ae29c16a0753688"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -56,10 +56,10 @@
         },
         "dj-database-url": {
             "hashes": [
-                "sha256:4aeaeb1f573c74835b0686a2b46b85990571159ffc21aa57ecd4d1e1cb334163",
-                "sha256:851785365761ebe4994a921b433062309eb882fedd318e1b0fcecc607ed02da9"
+                "sha256:ccf3e8718f75ddd147a1e212fca88eecdaa721759ee48e38b485481c77bca3dc",
+                "sha256:cd354a3b7a9136d78d64c17b2aec369e2ae5616fbca6bfbe435ef15bb372ce39"
             ],
-            "version": "==0.5.0"
+            "version": "==1.0.0"
         },
         "django": {
             "hashes": [
@@ -131,6 +131,13 @@
             ],
             "index": "pypi",
             "version": "==0.93.4"
+        },
+        "drf-writable-nested": {
+            "hashes": [
+                "sha256:e3224edcaaf86cc43a1e0d8e2f39aed42e651b45ab0106dadf02f07af3806626"
+            ],
+            "index": "pypi",
+            "version": "==0.6.4"
         },
         "drf-yasg": {
             "hashes": [

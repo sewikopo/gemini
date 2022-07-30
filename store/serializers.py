@@ -4,7 +4,7 @@ from decimal import Decimal
 from .models import Category,Product, OrderItem,Order,ServiceItem, Service,Staff
 from rest_framework import serializers
 from django.db import transaction
-
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,7 +51,7 @@ class ServiceItemSerializer(serializers.ModelSerializer):
         model = ServiceItem
         fields = ['id', 'product', 'quantity','total_price']
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSerializer(WritableNestedModelSerializer):
     items = OrderItemSerializer(many=True)
     total_price = serializers.SerializerMethodField()
 
