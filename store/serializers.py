@@ -61,7 +61,8 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'placed_at','payment_status', 'items','total_price']
-        
+    
+
     # def to_representation(self, instance):
     #     representation = super(OrderSerializer, self).to_representation(instance)
     #     representation['items'] = OrderItemSerializer(instance.items.all(), many=True).data
@@ -71,7 +72,17 @@ class OrderSerializer(serializers.ModelSerializer):
     #     instance.items.clear() 
     #     instance.items.add(*items) 
     #     return super(OrderSerializer,self).create(validated_data)
-        
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['payment_status']
+    
+    
+    
+    
+    
+    
+    
 class ServiceSerializer(serializers.ModelSerializer):
     items = ServiceItemSerializer(many=True)
     total_price = serializers.SerializerMethodField()

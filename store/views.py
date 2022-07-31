@@ -16,7 +16,7 @@ from .models import Category, Service, Product, Order,OrderItem,ServiceItem, Sta
 from .serializers import  AddOrderItemSerializer, CategorySerializer, OrderItemSerializer, CreateOrderSerializer, StaffSerializer
 from .serializers import ProductSerializer, OrderSerializer, UpdateOrderItemSerializer
 from .serializers import ServiceSerializer, CreateServiceSerializer, AddServiceItemSerializer, UpdateServiceItemSerializer
-from .serializers import ServiceItemSerializer, StaffSerializer
+from .serializers import ServiceItemSerializer, StaffSerializer,UpdateOrderSerializer
 from store import serializers 
 
 
@@ -73,6 +73,11 @@ class OrderViewSet(ModelViewSet):
     
     def get_serializer_context(self):
         return {'request': self.request}
+    
+    def get_serializer_class(self):
+        if self.request.method == 'PATCH':
+            return UpdateOrderSerializer
+        return OrderSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
@@ -81,6 +86,7 @@ class OrderViewSet(ModelViewSet):
         order = serializer.save()
         serializer = OrderSerializer(order)
         return Response(data = serializer.data)
+    
     
     
 class ServiceViewSet(ModelViewSet):
