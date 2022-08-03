@@ -1,5 +1,4 @@
-from itertools import product
-from urllib import request, response
+from rest_framework.parsers import MultiPartParser
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -16,12 +15,12 @@ from .models import Category, Service, Product, Order,OrderItem,ServiceItem, Sta
 from .serializers import  AddOrderItemSerializer, CategorySerializer, OrderItemSerializer, CreateOrderSerializer, StaffSerializer
 from .serializers import ProductSerializer, OrderSerializer, UpdateOrderItemSerializer
 from .serializers import ServiceSerializer, CreateServiceSerializer, AddServiceItemSerializer, UpdateServiceItemSerializer
-from .serializers import ServiceItemSerializer, StaffSerializer,UpdateOrderSerializer
+from .serializers import ServiceItemSerializer, StaffSerializer,UpdateOrderSerializer, CustomSerializer
 from store import serializers 
-
-
-# schema_view = get_swagger_view(title='Store API')
-# url(r'^$', schema_view)
+from rest_framework_swagger.views import get_swagger_view
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
+from drf_yasg import openapi
 
 class ProductViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
@@ -78,7 +77,8 @@ class OrderViewSet(ModelViewSet):
         if self.request.method == 'PATCH':
             return UpdateOrderSerializer
         return OrderSerializer
-
+    
+    
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
             data=request.data)
@@ -107,7 +107,7 @@ class ServiceViewSet(ModelViewSet):
     
 
 class OrderItemViewSet(ModelViewSet):
-    http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -117,10 +117,12 @@ class OrderItemViewSet(ModelViewSet):
         return OrderItemSerializer
 
     def get_queryset(self):
-        return OrderItem.objects.filter(order_id=self.kwargs['order_pk']).select_related('product')
+        return OrderItem.objects.filter(
+            order_id=self.kwargs.get('order_pk')
+        ).select_related('product')
 
     def get_serializer_context(self):
-        return {'order_id': self.kwargs['order_pk']}
+        return {'order_id': self.kwargs.get('order_pk')}
 
 class ServiceItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']

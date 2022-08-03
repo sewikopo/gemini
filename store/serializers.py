@@ -1,11 +1,12 @@
-
+import coreapi
+from ast import Or
 from decimal import Decimal
-
 from .models import Category,Product, OrderItem,Order,ServiceItem, Service,Staff
 from rest_framework import serializers
 from django.db import transaction
 from drf_writable_nested.serializers import WritableNestedModelSerializer
-
+from drf_yasg.utils import swagger_serializer_method, swagger_auto_schema
+from drf_yasg import openapi
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -30,16 +31,18 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'unit_price']    
 
-class OrderItemSerializer(WritableNestedModelSerializer):
-    product = SimpleProductSerializer()
+class OrderItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer(read_only = False)
     total_price = serializers.SerializerMethodField()
-
+    
+    
     def get_total_price(self, order_item: OrderItem):
         return order_item.quantity * order_item.product.unit_price
+    
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'quantity','total_price']
-
+        fields = ['id','product', 'quantity','total_price']
+        
 
 class ServiceItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer()
@@ -52,7 +55,7 @@ class ServiceItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'quantity','total_price']
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
+    items = OrderItemSerializer(many=True, read_only = False)
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, order):
@@ -62,26 +65,12 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['id', 'placed_at','payment_status', 'items','total_price']
     
-
-    # def to_representation(self, instance):
-    #     representation = super(OrderSerializer, self).to_representation(instance)
-    #     representation['items'] = OrderItemSerializer(instance.items.all(), many=True).data
-    #     return representation
-    # def create(instance,self, validated_data):
-    #     items = validated_data.pop('items')
-    #     instance.items.clear() 
-    #     instance.items.add(*items) 
-    #     return super(OrderSerializer,self).create(validated_data)
 class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['payment_status']
     
-    
-    
-    
-    
-    
+   
     
 class ServiceSerializer(serializers.ModelSerializer):
     items = ServiceItemSerializer(many=True)
@@ -94,20 +83,22 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = ['id','staff','license_plates','placed_at','payment_status', 'items','total_price']
 
+class CustomSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 class AddOrderItemSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
-
-    def validate_product_id(self, value):
-        if not Product.objects.filter(pk=value).exists():
-            raise serializers.ValidationError(
-                'No product with the given ID was found.')
-        return value
-
+    @swagger_auto_schema(request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Product ID'),
+        'qty': openapi.Schema(type=openapi.TYPE_INTEGER, description='Quantity')
+    }),
+    responses={400: 'Bad Request'})
     def save(self, **kwargs):
         order_id = self.context['order_id']
         product_id = self.validated_data['product_id']
         quantity = self.validated_data['quantity']
-        # unit_price = self.validated_data['unit_price']
         try:
             order_item = OrderItem.objects.get(
                 order_id=order_id, product_id=product_id)
