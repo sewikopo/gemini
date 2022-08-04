@@ -96,7 +96,13 @@ class ServiceViewSet(ModelViewSet):
     
     def get_serializer_context(self):
         return {'request': self.request}
-
+    @swagger_auto_schema(request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'staff': openapi.Schema(type=openapi.TYPE_STRING, description='Staff Name'),
+        'plates': openapi.Schema(type=openapi.TYPE_STRING, description='License Plates')
+    }),
+    responses={400: 'Bad Request'})
     def create(self, request, *args, **kwargs):
         serializer = CreateServiceSerializer(
             data=request.data)
@@ -135,10 +141,12 @@ class ServiceItemViewSet(ModelViewSet):
         return ServiceItemSerializer
 
     def get_queryset(self):
-        return ServiceItem.objects.filter(service_id=self.kwargs['service_pk']).select_related('product')
+        return ServiceItem.objects.filter(
+            service_id=self.kwargs.get('service_pk')
+        ).select_related('product')
 
     def get_serializer_context(self):
-        return {'service_id': self.kwargs['service_pk']}
+        return {'service_id': self.kwargs.get('service_pk')}
             
 class StaffViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete','head', 'options']

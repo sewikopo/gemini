@@ -123,7 +123,13 @@ class AddServiceItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'No product with the given ID was found.')
         return value
-
+    @swagger_auto_schema(request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='Product ID'),
+        'qty': openapi.Schema(type=openapi.TYPE_INTEGER, description='Quantity')
+    }),
+    responses={400: 'Bad Request'})
     def save(self, **kwargs):
         service_id = self.context['service_id']
         product_id = self.validated_data['product_id']
@@ -161,6 +167,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         fields = ['id']
         
 class CreateServiceSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Service
         fields = ['staff', 'license_plates']
